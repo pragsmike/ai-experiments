@@ -38,7 +38,7 @@
               python -m venv .venv
               source .venv/bin/activate
               pip install --upgrade pip
-              pip install crawl4ai
+              pip install crawl4ai==0.6.3
             else
               source .venv/bin/activate
             fi

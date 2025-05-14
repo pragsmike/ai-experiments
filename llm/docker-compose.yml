@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+    ##############################################
+    # LLM runtime
+    ##############################################
+    ollama:
+      image: ollama/ollama:latest
+      container_name: ollama
+      restart: unless-stopped
+      ports: ["11434:11434"]
+      volumes:
+        - ollama-data:/root/.ollama
+
+    ##############################################
+    # Web UI for Ollama (chat, model mgmt, etc.)
+    ##############################################
+    open-webui:
+      image: ghcr.io/open-webui/open-webui:main
+      container_name: open-webui
+      restart: unless-stopped
+      depends_on: [ ollama ]
+      environment:
+        - OLLAMA_BASE_URL=http://ollama:11434
+      ports: ["3000:8080"]
+      volumes:
+        - open-webui-data:/app/backend/data
+
+    ##############################################
+    # LangChain scratch-pad container
+    ##############################################
+    langchain:
+      image: python:3.12-slim
+      container_name: langchain
+      restart: unless-stopped
+      depends_on: [ ollama ]
+      working_dir: /workspace
+      volumes:
+        - ./workspace:/workspace
+      command: >
+        bash -c "pip install --no-cache-dir langchain langchain-community
+                        langchain-openai && tail -f /dev/null"
+
+
+    ##############################################
+    # n8n container
+    ##############################################
+    n8n:
+      image: n8nio/n8n:latest
+      container_name: n8n
+      restart: unless-stopped
+      ports: ["5678:5678"]
+      environment:
+        - GENERIC_TIMEZONE=America/New_York
+      volumes:
+        - n8n-data:/home/mg/.n8n
+
+volumes:
+  ollama-data:
+  open-webui-data:
+  n8n-data:

@@ -26,7 +26,7 @@ def html_from_mhtml(path: Path) -> str:
 
 
 async def main() -> None:
-    mhtml_path = Path("data/test.mhtml").resolve()
+    mhtml_path = Path("../data/test.mhtml").resolve()
     raw_html = html_from_mhtml(mhtml_path)
 
     # Strip link-reference list and keep content *inside* `.body`

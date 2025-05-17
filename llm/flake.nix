@@ -18,6 +18,7 @@
         docker         = pkgs.docker;
         "docker-compose" = pkgs.docker-compose;
 	btop		= pkgs.btop;
+	jq		= pkgs.jq;
       };
     };
 
@@ -35,6 +36,10 @@
         btop = {
           type    = "app";
           program = "${pkgs.btop}/bin/btop";
+        };
+        jq = {
+          type    = "app";
+          program = "${pkgs.jq}/bin/jq";
         };
       };
     };

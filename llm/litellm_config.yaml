@@ -1,0 +1,19 @@
+# ./litellm_config.yaml
+
+model_list:
+  - model_name: openai-summarizer  # Custom name you'll use in your Clojure app
+    litellm_params:
+      model: gpt-3.5-turbo         # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
+
+  - model_name: ollama-expander    # Custom name you'll use in your Clojure app
+    litellm_params:
+      model: ollama/mistral        # Tells LiteLLM to use the 'mistral' model from an Ollama instance
+                                   # You could also use just 'mistral' if Ollama is the default for it
+      api_base: http://ollama:11434 # IMPORTANT: 'ollama' is the service name in docker-compose
+
+# Optional: general settings for LiteLLM
+# settings:
+#   debug: True
+#   # If you want all requests to require a master key to LiteLLM itself (good for security)
+#   master_key: "your-litellm-master-key" # If set, clients must send this in Authorization header

@@ -1,6 +1,6 @@
-curl -X POST http://localhost:8000/v1/chat/completions \
+curl -v -X POST http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  # -H "Authorization: Bearer your-litellm-master-key" # Only if master_key is set in litellm_config.yaml
+  -H "Authorization: Bearer $OPENAI_API_KEY" \
   -d '{
         "model": "openai-summarizer",
         "messages": [

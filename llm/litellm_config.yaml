@@ -1,12 +1,17 @@
 # ./litellm_config.yaml
 
 model_list:
-  - model_name: openai-summarizer  # Custom name you'll use in your Clojure app
+  - model_name: openai-summarizer  # Custom name
     litellm_params:
       model: gpt-3.5-turbo         # Actual OpenAI model name
       api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
 
-  - model_name: ollama-expander    # Custom name you'll use in your Clojure app
+  - model_name: openai-nano
+    litellm_params:
+      model: gpt-4.1-nano          # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
+
+  - model_name: ollama-expander    # Custom name you'll use in JSON request model value
     litellm_params:
       model: ollama/mistral        # Tells LiteLLM to use the 'mistral' model from an Ollama instance
                                    # You could also use just 'mistral' if Ollama is the default for it

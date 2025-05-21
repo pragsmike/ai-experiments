@@ -1,4 +1,8 @@
 *-
+.nrepl*
+.cpcache
+.lsp
+.clj*
 *.bak
 *.swp
 .venv

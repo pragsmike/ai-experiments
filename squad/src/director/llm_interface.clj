@@ -2,7 +2,7 @@
   (:require [clj-http.client :as http]
             [clojure.data.json :as json]))
 
-(def LITELLM_ENDPOINT "http://localhost:4000/chat/completions") ; Default LiteLLM endpoint
+(def LITELLM_ENDPOINT "http://localhost:8000/chat/completions") ; Default LiteLLM endpoint
 
 (defn- parse-llm-response [response-body model-name]
   (try

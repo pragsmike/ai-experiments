@@ -1,3 +1,12 @@
+I will describe here a system for simulating game play using LLM model instances and a director program.
+You will not generate code at first, but will critique this description.
+Find inconsistencies or other issues that would interfere with the design and implementation of this system.
+
+At the end is an illustrative example scenario of how a game might be played out in this system.
+The example is incomplete, and is in an informal format rather than JSON.
+You will reformat and finish the example.
+
+* Overview
 
 We are creating a Clojure application that will orchestrate a set of LLM models.
 The models are accessible via HTTP through a single LiteLLM endpoint, which is already set up.
@@ -38,15 +47,25 @@ There may be more than one play of the same game.
 
 
 * Data objects
-  * planner prompt, which instructs the planner how to design the game
-  * instructions, one for each player, which tells the player how to act on its turn
-  * game state, initially produced by the planner, updated by each player on its turn
+  * LLM roster, used by the director, describes the names and capabilities of the models.
+    The director uses this to decide which agents to use as planner and players.
+  * planner prompt, which instructs the planner how to design the game.
+  * instructions, one for each player, which tells the player how to act on its turn.
+    These instructions embody the rules of the game, as devised by the planner.
+  * game state, initially produced by the planner, updated by each player on its turn.
+    The game state might be the accumulated dialog of past utterances by players,
+    or it might be board positions, the state of agenda items, or something else specific to the game.
+    The game state should be encoded as JSON and should be as explicit as possible,
+    so that players need not, say, parse dialog or moves to reconstruct the state.
+    The player whose turn is next should be explicitly stated, or obviously deducible
+    from the game state.  If there is no next player, the game is over.
 
 * The Planner
 
 The planner designs the game that the players will play.
 Its task here is one of mechanism design.
-It designs rules for the players to follow.
+It designs rules for the players to follow. These will be communicated to the players
+in the form of instructions that are part of the prompt sent to the player on each turn.
 
 The planner generates instructions for the players, that instruct them in how to carry out their role the scenario.
 Some players might have the same instructions, but in general each player may have its own unique instructions.
@@ -54,13 +73,16 @@ Those instructions are stored, because each will be sent to its player on that p
 
 * The player
 
-On each of its turns, the director will send the player an instruction and a game state.
-The instruction will tell it how to modify the game state, and the player will then
-respond with the description of that new game state.
+On each of its turns, the director will send the player an instruction and the current game state.
+The instruction will tell it how to interpret the game state, how to modify the game state,
+and the player will then respond with the new game state encoded as JSON.
 
 * The Director
 
-The director's task is as follows.
+The director's task is as follows.  It will report the progress of the game in conversational style.
+It will narrate the player, action and outcome of each turn,
+and the final outcome of the play.
+It won't print the game state on each turn, unless in debug mode.
 
 During the planning phase:
 
@@ -91,33 +113,51 @@ For the first game, the players conduct a negotiation, following Roberts rules o
 
 Here is is how a game might play out.  In this game, one player is the Chair, the others are A and B.
 Here we use INSTRUCTION_A as a placeholder for the instruction for player A, and so on.
+The initial game state is the single agenda item, Allot 100 coins among players.
 
-Director to Chair: 	INSTRUCTION_CHAIR
-                                Item: Allot 100 coins among players.
-Chair responds:     Meeting is now in order.  The Open agenda item is: Allot 100 coins among players.
+Director to Chair:              INSTRUCTION_CHAIR
                                 Item: Allot 100 coins among players.
 
-Director to A:          INSTRUCTION_A
+Chair responds:      Motions?
+
+Director to A:                  INSTRUCTION_A
                                 Item: Allot 100 coins among players.
+                                Chair: Motions?
 
 A responds:          I move I get 50 coins.
 
-Director to B:          INSTRUCTION_B
+Director to B:                  INSTRUCTION_B
                                 Item: Allot 100 coins among players.
+                                Chair: Motions?
                                 A: I move I get 50 coins.
-B responds:          I move that I get 50 coins.
 
-Director to Chair:     INSTRUCTION_CHAIR
+B responds:          I second A's motion.
+
+Director to Chair:              INSTRUCTION_CHAIR
                                 Item: Allot 100 coins among players.
+                                Chair: Motions?
                                 A: I move I get 50 coins.
-                                B: I move I get 50 coins.
-Chair:
+                                B: I second A's motion.
+
+Chair:               Motion to vote?
+
+Director to A:              INSTRUCTION_A
+                                Item: Allot 100 coins among players.
+                                Chair: Motions?
+                                A: I move I get 50 coins.
+                                B: I second A's motion.
+                                Chair: Motion to vote?
+
+A responds:          I move to vote.
+
+Director to B:              INSTRUCTION_B
+                                Item: Allot 100 coins among players.
+                                Chair: Motions?
+                                A: I move I get 50 coins.
+                                B: I second A's motion.
+                                Chair: Motion to vote?
+                                A: I move to vote.
+
+B responds:           I second the move to vote.
 
 
-
-
-
-
-* Wild ideas
-
-   Use a PlantUML sequence diagram to specify an interaction, and compile that into a program.

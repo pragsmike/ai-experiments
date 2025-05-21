@@ -1,0 +1,5 @@
+
+
+* Wild ideas
+
+   Use a PlantUML sequence diagram to specify an interaction, and compile that into a program.

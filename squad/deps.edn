@@ -3,5 +3,6 @@
  :deps  {org.clojure/clojure {:mvn/version "1.11.1"}
          org.clojure/data.json {:mvn/version "2.4.0"}
          clj-http/clj-http   {:mvn/version "3.12.3"}
-         cheshire/cheshire   {:mvn/version "5.12.0"}}
- }
+         cheshire/cheshire   {:mvn/version "5.12.0"}
+         org.clojure/tools.cli {:mvn/version "1.0.219"}   ; For CLI options
+         }}

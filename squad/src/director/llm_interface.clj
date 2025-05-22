@@ -19,7 +19,7 @@
 
 (defn real-call-model
   "Makes an actual HTTP call to the LiteLLM endpoint."
-  [model-name prompt-string _ignored-planner-model-name-cfg]
+  [model-name prompt-string]
   (println (str "\n;; --- ACTUALLY Calling LLM: " model-name " via " LITELLM_ENDPOINT " ---"))
   (try
     (let [request-body {:model model-name

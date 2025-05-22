@@ -27,11 +27,6 @@
    ["-f" "--force-plan" "Force regeneration of game design files, even if they exist"]
    ["-h" "--help"]])
 
-(defn- load-planner-prompt [filepath]
-  (try (slurp filepath)
-       (catch Exception e
-         (println (str "Error reading planner prompt file " filepath ": " (.getMessage e)))
-         nil)))
 
 (defn -main [& args]
   (let [{:keys [options summary errors]} (cli/parse-opts args cli-options)]
@@ -50,26 +45,20 @@
       (do (println "INFO: Using REAL LLM calls via LiteLLM.")
           (alter-var-root #'*call-model-fn* (constantly llm-iface/real-call-model))))
 
-    (if-let [planner-prompt-text (load-planner-prompt (:planner-prompt options))]
-      (if-let [planner-data (planning/execute-planning-phase
-                             planner-prompt-text
-                             (:force-plan options)
-                             *call-model-fn*
-                             planner-model-name-config
-                             (:planner-prompt options))] ; Pass original prompt filename for guessing dir
-        (let [initial-state (:initial_game_state planner-data)
-              instructions (:player_instructions planner-data)]
-          (if (and (map? initial-state) (seq initial-state)
-                   (map? instructions) (seq instructions)
-                   (:next_player_to_act initial-state))
-            (play/execute-play-phase
-             initial-state
-             instructions
-             *call-model-fn*
-             default-player-model-name-config
-             planner-model-name-config) ; Pass planner model name in case call-model needs it
-            (println "Director: Planner output was invalid or incomplete. Halting.")))
-        (println "Director: Planning phase failed or could not load/generate design. Halting."))
-      (println "Director: Could not load planner prompt. Halting."))
+    (if-let [planner-data (planning/execute-planning-phase (:planner-prompt options)
+                                                           (:force-plan options)
+                                                           *call-model-fn*
+                                                           planner-model-name-config)]
+      (let [initial-state (:initial_game_state planner-data)
+            instructions (:player_instructions planner-data)]
+        (if (and (map? initial-state) (seq initial-state)
+                 (map? instructions) (seq instructions)
+                 (:next_player_to_act initial-state))
+          (play/execute-play-phase initial-state
+                                   instructions
+                                   *call-model-fn*
+                                   default-player-model-name-config)
+          (println "Director: Planner output was invalid or incomplete. Halting.")))
+      (println "Director: Planning phase failed or could not load/generate design. Halting."))
 
     (println "\n=== Director Finished ===")))

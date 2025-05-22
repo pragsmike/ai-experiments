@@ -159,11 +159,11 @@
 
 (defn simulated-call-model
   "Simulated LLM call. Returns pre-defined responses."
-  [model-name prompt-string planner-model-name-cfg]
+  [model-name prompt-string]
   (println (str "\n;; --- SIMULATED Calling LLM: " model-name " ---"))
   (Thread/sleep 50)
 
-  (if (= model-name planner-model-name-cfg)
+  (if (= model-name "openai/turbo")
     simulated-planner-response-json
     (let [current-game-state-json (when prompt-string (second (str/split prompt-string #"Current Game State:\n")))
           current-game-state-map (when current-game-state-json

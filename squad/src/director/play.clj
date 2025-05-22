@@ -5,8 +5,7 @@
 (defn execute-play-phase [initial-game-state
                           player-instructions
                           call-model-fn
-                          default-player-model-name-cfg
-                          planner-model-name-cfg] ; Passed to call-model-fn
+                          player-model-name]
   (println "\n--- Starting Play Phase ---")
   (loop [current-game-state initial-game-state
          turn-number 1]
@@ -29,10 +28,9 @@
                                                " (keyword: " player-id-kw "). Available instructions for players: "
                                                (map name (keys player-instructions))))))]
           (println (str "Director: It's " next-player-id-str "'s turn."))
-          (let [player-model default-player-model-name-cfg
-                player-prompt-string (str player-instr "\n\nCurrent Game State:\n" (json/write-str current-game-state))]
-            (println (str "Director: Sending prompt to " next-player-id-str " (" player-model ")..."))
-            (let [player-response-str (call-model-fn player-model player-prompt-string planner-model-name-cfg) ; Pass planner_model_name for call-model's logic if needed
+          (let [player-prompt-string (str player-instr "\n\nCurrent Game State:\n" (json/write-str current-game-state))]
+            (println (str "Director: Sending prompt to " next-player-id-str " (" player-model-name ")..."))
+            (let [player-response-str (call-model-fn player-model-name player-prompt-string)
                   player-response (util/parse-data-from-llm-response player-response-str (str next-player-id-str "'s Response"))]
               (if (and player-response (:utterance player-response) (:new_game_state player-response) (not (:error player-response)))
                 (let [utterance (:utterance player-response) new-game-state (:new_game_state player-response)]

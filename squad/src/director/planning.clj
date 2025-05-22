@@ -1,36 +1,32 @@
 (ns director.planning
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [director.persistence :as persistence]
+  (:require [director.persistence :refer (load-planner-prompt load-design save-design! design-exists?)]
             [director.util :as util]))
 
-(defn execute-planning-phase [planner-prompt-text
+(defn execute-planning-phase [prompt-filename
                               force-plan?
                               call-model-fn
-                              planner-model-name-cfg
-                              default-prompt-filename] ; For guessing dir if not forcing
+                              planner-model-name]
+
   (println "--- Starting Planning Phase ---")
-  (let [call-planner-and-save (fn []
-                                (println "Director: Calling Planner model (" planner-model-name-cfg ")...")
-                                (let [planner-response-str (call-model-fn planner-model-name-cfg planner-prompt-text planner-model-name-cfg) ; Pass cfg to call-model
-                                      planner-output (util/parse-data-from-llm-response planner-response-str "Planner Output")]
-                                  (if (and planner-output (not (:error planner-output)) (:game_title planner-output) (:initial_game_state planner-output) (:player_instructions planner-output))
-                                    (let [game-design-dir (persistence/get-game-design-dir-path (or (:game_id planner-output) (:game_title planner-output)))]
-                                      (println "Director: Received and parsed planner output.")
-                                      (println "Director: Game Title - " (:game_title planner-output))
-                                      (if (persistence/save-game-design! game-design-dir planner-output planner-model-name-cfg)
-                                        (assoc planner-output :game_design_dir game-design-dir)
-                                        (do (println "Failed to save game design.") nil)))
-                                    (do (println "Director: Planner output was invalid, incomplete, or planner returned an error.")
-                                        (when (:raw planner-output) (println "Planner raw response was logged (first 200 chars):" (subs (:raw planner-output) 0 (min 200 (count (:raw planner-output))))))
-                                        nil))))]
-    (if force-plan?
-      (call-planner-and-save)
-      (let [;; Simplistic way to guess directory if not forcing plan
-            potential-game-title-from-prompt-filename (-> default-prompt-filename (io/file) (.getName) (clojure.string/split #"\.") first)
-            game-design-dir (persistence/get-game-design-dir-path potential-game-title-from-prompt-filename)
-            loaded-design (persistence/load-game-design game-design-dir)]
-        (if loaded-design
-          (assoc loaded-design :game_design_dir game-design-dir)
-          (do (println "No existing design found or failed to load for" (str game-design-dir) ". Generating new one.")
-              (call-planner-and-save)))))))
+  (if-let [planner-prompt-text (load-planner-prompt prompt-filename)]
+    (let [call-planner-and-save (fn []
+                                  (println "Director: Calling Planner model (" planner-model-name ")...")
+                                  (let [respstr (call-model-fn planner-model-name planner-prompt-text)
+                                        out (util/parse-data-from-llm-response respstr "Planner Output")
+                                        out (assoc out :planner_model planner-model-name)]
+                                    (if (and out (not (:error out)) (:game_title out) (:initial_game_state out) (:player_instructions out))
+                                      (do
+                                        (println "Director: Received and parsed planner output.")
+                                        (println "Director: Game Title - " (:game_title out))
+                                        (when-not (save-design! out)
+                                          (println "Failed to save game design.")))
+                                      (do (println "Director: Planner output was invalid, incomplete, or planner returned an error.")
+                                          (when (:raw out) (println "Planner raw response was logged (first 200 chars):" (subs (:raw out) 0 (min 200 (count (:raw out))))))
+                                          nil))))]
+      (if (or force-plan? (not (design-exists? prompt-filename)))
+        (call-planner-and-save)
+        (let [loaded-design (load-design prompt-filename)]
+          (when-not (:loaded? loaded-design)
+            (println "No existing design found or failed to load for" (:game-design-dir loaded-design) ". Generating new one.")
+            (call-planner-and-save)))))
+    (println "Director: Could not load planner prompt. Halting.")))

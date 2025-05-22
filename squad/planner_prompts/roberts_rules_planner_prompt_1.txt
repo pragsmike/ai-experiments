@@ -1,0 +1,39 @@
+You are an expert game designer LLM. Your task is to design a game based on the specifications provided and output the design as a single JSON object.
+
+**Game Concept:**
+A negotiation game for three players: "Chair", "PlayerA", and "PlayerB".
+The game follows a simplified version of Robert's Rules of Order.
+The objective is to decide on the allotment of 100 indivisible coins among PlayerA and PlayerB. The Chair does not receive coins but facilitates the meeting.
+
+**Output Format:**
+You MUST produce a single JSON object. This JSON object will have three top-level keys: "game_title", "initial_game_state", and "player_instructions".
+
+1.  **`game_title` (String):**
+    A descriptive title for the game. E.g., "Roberts Rules Coin Allotment".
+
+2.  **`initial_game_state` (JSON Object):**
+    This object represents the starting state of the game. It MUST include the following fields:
+    *   `game_id` (String): A unique ID for this game type, e.g., "roberts_rules_coin_v1".
+    *   `description` (String): A brief description of the game's premise.
+    *   `players` (Array of Strings): List of player IDs: ["Chair", "PlayerA", "PlayerB"].
+    *   `agenda_item` (String): The main topic, e.g., "Allot 100 coins between PlayerA and PlayerB."
+    *   `coins_to_allot` (Integer): The total number of coins, e.g., 100.
+    *   `allotted_coins` (JSON Object): Initial coin distribution, e.g., `{"PlayerA": 0, "PlayerB": 0}`.
+    *   `current_phase` (String): The initial phase of the game, e.g., "MeetingOpened".
+    *   `current_motion` (Null or JSON Object): Initially null.
+    *   `secondary_motion` (Null or JSON Object): Initially null.
+    *   `dialog_history` (Array of JSON Objects): Start with `[{"speaker": "System", "line": "Game Start. Agenda: Allot 100 coins between PlayerA and PlayerB. The Chair has the floor."}]`.
+    *   `next_player_to_act` (String): Should be "Chair".
+    *   `votes` (JSON Object): Initially `{}`.
+
+3.  **`player_instructions` (JSON Object):**
+    A map where keys are player IDs ("Chair", "PlayerA", "PlayerB") and values are detailed string instructions.
+    Each player's instruction string MUST explain:
+    *   Their role and objective.
+    *   They will receive the current game state as a JSON string.
+    *   They MUST respond with a single JSON string: `{"utterance": "...", "new_game_state": { ...complete new state... }}`.
+    *   How to update `new_game_state`: append to `dialog_history`, update game fields, and CRITICALLY set `next_player_to_act` (or null if game over).
+    *   **Chair:** Facilitate, manage turns, call votes, adjourn. Does not vote on main motion.
+    *   **PlayerA & PlayerB:** Maximize coins. Make/second motions, discuss, vote.
+
+Produce ONLY the single JSON object. Do not include any other explanatory text.

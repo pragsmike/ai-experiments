@@ -1,8 +1,13 @@
-
-{:paths ["src"]
+{:paths ["src" "resources"] ; "resources" is often where prompts are kept if not in src
  :deps  {org.clojure/clojure {:mvn/version "1.11.1"}
          org.clojure/data.json {:mvn/version "2.4.0"}
          clj-http/clj-http   {:mvn/version "3.12.3"}
          cheshire/cheshire   {:mvn/version "5.12.0"}
          org.clojure/tools.cli {:mvn/version "1.0.219"}   ; For CLI options
+         }
+ :aliases
+ {:test {:extra-paths ["test"]
+         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}} ; Optional, for generative testing later
+         :main-opts ["-m" "clojure.test" "-r"] ; Runs all tests in namespaces matching regex (e.g., director.*-test)
          }}
+}

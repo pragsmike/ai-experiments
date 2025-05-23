@@ -1,9 +1,8 @@
 (ns director.persistence
   (:require [clojure.java.io :as io]
+            [clojure.string :as str]
             [clojure.data.json :as json]
             [director.util :as util]))
-
-;; No longer defines game-designs-base-dir here. It will be passed in.
 
 (defn get-game-design-dir-file
   "Constructs a File object for a game's design directory within a given base directory."
@@ -88,7 +87,7 @@
          nil)))
 
 (defn prompt-filepath->game-id [prompt-filepath]
-  (-> prompt-filepath (io/file) (.getName) (clojure.string/split #"\.") first))
+  (-> prompt-filepath (io/file) (.getName) (str/split #"\.") first))
 
 ;; Helper that now takes base-dir
 (defn prompt-filepath->design-dir-file [base-dir prompt-filepath]

@@ -7,7 +7,6 @@
          }
  :aliases
  {:test {:extra-paths ["test"]
-         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}} ; Optional, for generative testing later
-         :main-opts ["-m" "clojure.test" "-r"] ; Runs all tests in namespaces matching regex (e.g., director.*-test)
-         }}
-}
+         :extra-deps {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}}} 

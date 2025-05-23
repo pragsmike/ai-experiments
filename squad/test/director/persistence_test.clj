@@ -87,22 +87,24 @@
         (is (= "Instruction for P2" (get-in loaded-design [:player_instructions :Player2])))))
 
     (testing "Higher-level save and load using planner output structure"
-      (let [temp-game-id "temp_save_load_game"
-            planner-output-for-save (assoc sample-planner-output :game_id temp-game-id) ; :planner_model already in sample
+      (let [temp-game-id "temp_save_load_game" ; This will be the directory name
+            planner-output-for-save (assoc sample-planner-output :game_id temp-game-id)
             expected-dir (p/get-game-design-dir-file *test-base-dir-path-str* temp-game-id)]
         (is (true? (p/save-planner-output! *test-base-dir-path-str* planner-output-for-save sample-planner-model-cfg)))
         (is (.exists (io/file expected-dir "initial_state.json")))
 
-        (let [dummy-prompt-filename (str temp-game-id "_prompt.txt")
-              dummy-prompt-file (io/file *test-base-dir-path-str* dummy-prompt-filename)] ; Create dummy prompt in base test dir
+        ;; Make the dummy prompt filename derive the *correct* game_id for loading
+        (let [dummy-prompt-filename (str temp-game-id ".txt") ; e.g., "temp_save_load_game.txt"
+                                                            ; so (p/prompt-filepath->game-id ...) gives "temp_save_load_game"
+              dummy-prompt-file (io/file *test-base-dir-path-str* dummy-prompt-filename)]
           (spit dummy-prompt-file "This is a dummy prompt for loading test.")
           (is (.exists dummy-prompt-file))
 
           (let [loaded (p/load-design-for-prompt *test-base-dir-path-str* (.getAbsolutePath dummy-prompt-file))]
-            (is (not (nil? loaded)))
-            (is (:loaded_from_file loaded))
-            (is (= temp-game-id (:game_id loaded)))
-            (is (= "Instruction for P1" (get-in loaded [:player_instructions :Player1]))))
+            (is (not (nil? loaded)) "Loaded object should not be nil")
+            (is (:loaded_from_file loaded) "Should have :loaded_from_file true")
+            (is (= temp-game-id (:game_id loaded)) "Game ID should match")
+            (is (= "Instruction for P1" (get-in loaded [:player_instructions :Player1])) "Player1 instruction should match"))
           (.delete dummy-prompt-file))))))
 
 
@@ -139,7 +141,7 @@
       (.delete temp-prompt-file))
 
     (testing "Loading a non-existing prompt file"
-      (is (nil? (p/load-planner-prompt-text (io/file *test-base-dir-path-str* "non_existent_prompt.txt"))))))
+      (is (nil? (p/load-planner-prompt-text (io/file *test-base-dir-path-str* "non_existent_prompt.txt")))))))
 
 (deftest prompt-file-path-helpers-test
   (testing "Deriving game ID and design directory from prompt filepath"

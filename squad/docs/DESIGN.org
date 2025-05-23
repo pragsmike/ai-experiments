@@ -1,0 +1,13 @@
+
+**Notes on this Org file:**
+
+*   **`#+TITLE`**, etc.: Standard Org mode headers. The `{{TIMESTAMP}}` can be replaced with a date or Org's date insertion command.
+*   **`#+OPTIONS: toc:2 num:2 H:3`**: Generates a table of contents up to level 2, numbers sections, and limits headline export depth for some formats.
+*   **`*`, `**`, `***`**: Org headlines for sections.
+*   **:PROPERTIES: ... :END:** Used for metadata, here for `CUSTOM_ID` which can be useful for linking or export.
+*   **`#+BEGIN_SRC ... #+END_SRC`**: For code/text blocks. I've used `text` and `json`.
+*   **Emphasis:** Org mode uses `/italic/`, `*bold*`, `_underline_`, `+strikethrough+`, and `=verbatim=` or `~code~`. I've used bold for emphasis on CLI options and key terms.
+*   **Lists:** `-` for unordered lists.
+*   **Appendices:** Included as per the outline. You'll want to fill in Appendix B with more complete examples if this were a final document.
+
+This should give you a good starting point for your design document in Org format. You can then edit and expand it using any text editor, or Emacs for the full Org mode experience.

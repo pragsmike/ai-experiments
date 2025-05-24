@@ -4,55 +4,73 @@ services:
     # LLM runtime
     ##############################################
     ollama:
-      image: ollama/ollama:latest
-      container_name: ollama
-      restart: unless-stopped
-      #pull_policy: always # Ensures you get the latest Ollama image on startup/recreate
+        image: ollama/ollama:latest
+        container_name: ollama
+        restart: unless-stopped
+        pull_policy: always # Ensures you get the latest Ollama image on startup/recreate
 
-      runtime: nvidia
-      environment:
-        - NVIDIA_VISIBLE_DEVICES=all
-        - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-        - CUDA_VISIBLE_DEVICES=0
-        - OLLAMA_FLASH_ATTENTION=1
-        - OLLAMA_MAX_VRAM=11811160064
-        - OLLAMA_NUM_GPU_LAYERS=6 
-        - OLLAMA_DEBUG=0
-        - OLLAMA_CONTEXT_LENGTH=6000
-        #- LOG_LEVEL=debug
-      deploy:
-        resources:
-          reservations:
-            devices:
-              - driver: nvidia
-                capabilities: [gpu]
-                count: all
-
-      ports: ["11434:11434"]
-      volumes:
-        - ollama-data:/root/.ollama
-          #- ./ollama_data:/root/.ollama # Persists Ollama models outside the container
-
+        runtime: nvidia
+        environment:
+                - NVIDIA_VISIBLE_DEVICES=all
+                - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+                - CUDA_VISIBLE_DEVICES=0
+                - OLLAMA_FLASH_ATTENTION=1
+                - OLLAMA_MAX_VRAM=11811160064
+                - OLLAMA_NUM_GPU_LAYERS=6 
+                - OLLAMA_DEBUG=0
+                - OLLAMA_CONTEXT_LENGTH=6000
+                #- LOG_LEVEL=debug
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          capabilities: [gpu]
+                          count: all
+        ports: ["11434:11434"]
+        volumes:
+            - ollama-data:/root/.ollama
+            #- ./ollama_data:/root/.ollama # Persists Ollama models outside the container
 
     litellm:
-      image: ghcr.io/berriai/litellm:main-stable # Use a stable version
-      container_name: litellm_service
-      ports:
-        - "8000:4000" # LiteLLM now defaults to port 4000 internally. Expose it as 8000 externally.
-      volumes:
-        - ./litellm_config.yaml:/app/config.yaml # Mount your local config into the container
-                                                 # LiteLLM looks for config.yaml in its /app directory
-      environment:
-        - OPENAI_API_KEY=${OPENAI_API_KEY} # Pass the API key from host or .env file
-        # - LITELLM_MASTER_KEY=your-litellm-master-key # If you set one in config.yaml
-      command: ["--config", "/app/config.yaml", "--host", "0.0.0.0", "--port", "4000", "--debug"] # Run LiteLLM with the config
-                                                                                           # --host 0.0.0.0 makes it accessible from outside the container's internal network
-                                                                                           # --port 4000 is the internal port litellm listens on
-                                                                                           # --debug for more verbose logging
-#     depends_on:
-#       - ollama # Ensures Ollama starts (or attempts to start) before LiteLLM
-      restart: unless-stopped
-      pull_policy: always
+        image: ghcr.io/berriai/litellm:main-stable
+        container_name: litellm_service
+        ports:
+                - "8000:4000" # LiteLLM now defaults to port 4000 internally. Expose it as 8000 externally.
+        volumes:
+                - ./litellm_config.yaml:/app/config.yaml # Mount your local config into the container
+                                                         # LiteLLM looks for config.yaml in its /app directory
+        environment:
+                - OPENAI_API_KEY=${OPENAI_API_KEY} # Pass the API key from host or .env file
+                - DATABASE_URL=postgresql://${LITELLM_DB_USER}:${LITELLM_DB_PASSWORD}@postgres_db:5432/${LITELLM_DB_NAME}
+                - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+        command: ["--config", "/app/config.yaml", "--host", "0.0.0.0", "--port", "4000", "--debug"] # Run LiteLLM with the config
+        depends_on:
+                postgres_db:                 # LiteLLM depends on PostgreSQL
+                        condition: service_healthy # Wait for healthcheck to pass
+        restart: unless-stopped
+        pull_policy: always
+
+
+    postgres_db:
+        image: postgres:15
+        container_name: postgres_for_litellm
+        environment:
+                # These are for the PostgreSQL superuser (default is 'postgres')
+                # The script will use these to connect and create the LiteLLM user/db
+                POSTGRES_USER: ${POSTGRES_SUPERUSER_NAME}
+                POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD}
+                POSTGRES_DB: ${POSTGRES_INITIAL_DB}
+        ports:
+                - "5432:5432" # Expose PostgreSQL port to the host for the script & external tools
+        volumes:
+                - postgres_litellm_data:/var/lib/postgresql/data # Persist database data
+        healthcheck: # Optional: wait for postgres to be ready
+                test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_SUPERUSER_NAME:-postgres} -d ${POSTGRES_INITIAL_DB:-app_db}"]
+                interval: 10s
+                timeout: 5s
+                retries: 5
+        restart: unless-stopped
 
 
 
@@ -60,16 +78,17 @@ services:
     # Web UI for Ollama (chat, model mgmt, etc.)
     ##############################################
     open-webui:
-      image: ghcr.io/open-webui/open-webui:main
-      container_name: open-webui
-      restart: unless-stopped
-      depends_on: [ ollama ]
-      environment:
-        - OLLAMA_BASE_URL=http://ollama:11434
-      ports: ["3000:8080"]
-      volumes:
-        - open-webui-data:/app/backend/data
+        image: ghcr.io/open-webui/open-webui:main
+        container_name: open-webui
+        restart: unless-stopped
+        depends_on: [ ollama ]
+        environment:
+                - OLLAMA_BASE_URL=http://ollama:11434
+        ports: ["3000:8080"]
+        volumes:
+                - open-webui-data:/app/backend/data
 
 volumes:
-  ollama-data:
-  open-webui-data:
+        ollama-data:
+        open-webui-data:
+        postgres_litellm_data:

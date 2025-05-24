@@ -26,46 +26,48 @@ Your entire response must be a single JSON object with three top-level keys: "ga
     *   `"next_player_to_act"` (String): The ID of the player who should act first. This should usually be "Chair".
     *   `"votes"` (JSON Object): To store vote counts, e.g., initially `{}`.
 
-3.  **`player_instructions` (JSON Object):**
-    A JSON object where keys are player IDs (e.g., "Chair", "PlayerA", "PlayerB" -- these keys MUST be double-quoted strings) and values are detailed string instructions for that player.
-    Each player's instruction string MUST clearly explain the following:
 
-    *   Their specific role and general objective in the game.
-    *   That on their turn, they will receive the full current game state as a JSON string.
-    *   **CRITICAL OUTPUT FORMAT:** They MUST respond with a single, valid JSON object. This JSON object MUST have exactly two top-level keys, both of which must be double-quoted strings:
-        1.  `"utterance"`: (String) Their natural language speech for the turn (e.g., "I move that PlayerA gets 60 coins.").
-        2.  `"new_game_state"`: (JSON Object) The complete, updated game state after their action. This `new_game_state` object, and all its nested objects, MUST be valid JSON with all keys as double-quoted strings.
-            *   **Example of the required player response format:**
-                ```json
-                {
-                  "utterance": "This is my action or statement.",
-                  "new_game_state": {
-                    "game_id": "roberts_rules_coin_v1_gpt35",
-                    "description": "...",
-                    "players": ["Chair", "PlayerA", "PlayerB"],
-                    "agenda_item": "...",
-                    "coins_to_allot": 100,
-                    "allotted_coins": {"PlayerA": 0, "PlayerB": 0},
-                    "current_phase": "SomePhase",
-                    "current_motion": null,
-                    "secondary_motion": null,
-                    "dialog_history": [
-                      {"speaker": "PreviousSpeaker", "line": "Previous line."},
-                      {"speaker": "MyPlayerID", "line": "This is my action or statement."}
-                    ],
-                    "next_player_to_act": "NextPlayerID_or_null",
-                    "votes": {}
-                  }
-                }
-                ```
-    *   **How to update the `"new_game_state"` (within the player's JSON response):**
-        *   They MUST copy all fields from the received `current_game_state` unless explicitly modifying them.
-        *   They MUST append their own `"utterance"` to the `"dialog_history"` array. The new dialog entry should be a JSON object like `{"speaker": "TheirPlayerID", "line": "Their Utterance Text"}`.
-        *   They MUST correctly update game-specific JSON fields like `"current_phase"`, `"current_motion"`, `"secondary_motion"`, `"allotted_coins"` (if a motion passes and allocates coins), and `"votes"`. ALL KEYS IN THESE OBJECTS MUST BE DOUBLE-QUOTED STRINGS.
-        *   CRITICALLY, they MUST determine and set the `"next_player_to_act"` field in `"new_game_state"` according to simplified Robert's Rules. If their action concludes the game (e.g., Chair adjourning), `"next_player_to_act"` should be set to `null`.
-    *   **Specific Instructions for Roles (to be embedded within the string value for each player in `player_instructions`):**
-        *   **Chair:** Objective is to facilitate the meeting to resolve the agenda item according to simplified Robert's Rules. Manage turns, recognize speakers, call for motions, seconds, discussion, and votes. Announce results. Adjourn when the agenda is resolved. Does not make motions on the main agenda item or vote on it. Can vote on procedural motions (like "move to vote").
-        *   **PlayerA & PlayerB:** Objective is to maximize their own coin allotment. They can make motions, second motions, discuss, and vote. A motion could be, e.g., "PlayerA gets X coins, PlayerB gets Y coins" (where X+Y <= 100).
+3.  **`player_instructions` (JSON Object):**
+    A JSON object where keys are player IDs (e.g., "Chair", "PlayerA", "PlayerB" -- these keys MUST be double-quoted strings).
+    The **VALUE** for each player ID key (like "Chair") in this object **MUST BE A SINGLE STRING**.
+    This single string will contain all the necessary instructions for that player. Do NOT make the value a nested JSON object.
+
+    To construct this single string value for each player, you will concatenate the following pieces of information, ensuring proper formatting and newlines within the string for readability by the player LLM:
+
+    a.  **Role and Objective:** Start the string with a clear description of their specific role (e.g., "You are the Chair.") and general objective.
+    b.  **Game State Info:** Include a sentence like: "On your turn, you will receive the full current game state as a JSON string."
+    c.  **CRITICAL JSON OUTPUT SPECIFICATION:** Clearly state in the string: "You MUST respond with a single, valid JSON object. This JSON object MUST have exactly two top-level keys: a string key `\"utterance\"` (its value being your natural language speech for the turn) and a string key `\"new_game_state\"` (its value being a complete JSON object representing the new game state). All keys in your entire JSON response, including within `new_game_state` and any nested objects, MUST be strings enclosed in double quotes. Do not use Clojure-style keywords (like :keyword) for keys."
+    d.  **EXAMPLE OF PLAYER JSON RESPONSE (as part of the instruction string):** Include the following exact example, formatted as a string block, within the player's overall instruction string. Ensure the example itself uses double-quoted keys and is valid JSON. Do NOT include any comments like `/* ... */` inside the JSON example you provide within the player's instruction string.
+        ```text
+        Example of your required JSON response format:
+        {
+          "utterance": "This is my planned utterance for the turn.",
+          "new_game_state": {
+            "game_id": "example_game_id",
+            "description": "Example description",
+            "players": ["Chair", "PlayerA", "PlayerB"],
+            "agenda_item": "Example agenda",
+            "coins_to_allot": 100,
+            "allotted_coins": {"PlayerA": 0, "PlayerB": 0},
+            "current_phase": "SomePhase",
+            "current_motion": null,
+            "secondary_motion": null,
+            "dialog_history": [
+              {"speaker": "PreviousSpeaker", "line": "Previous line."},
+              {"speaker": "MyPlayerID", "line": "This is my planned utterance for the turn."}
+            ],
+            "next_player_to_act": "NextPlayerID_or_null",
+            "votes": {}
+          }
+        }
+        ```
+    e.  **INSTRUCTIONS ON UPDATING `new_game_state` (as part of the instruction string):** Detail how the player should construct their `new_game_state` JSON object. Explain that they should copy fields from the received `current_game_state` and modify them appropriately (e.g., append their own new dialog entry `{"speaker": "TheirPlayerID", "line": "Their Utterance Text"}` to the `dialog_history` array, update relevant game-specific fields, and determine and set the `next_player_to_act` field). Reiterate that all keys must be double-quoted strings.
+    f.  **ROLE-SPECIFIC GUIDANCE (as part of the instruction string):** Provide the specific guidance for the Chair, PlayerA, and PlayerB roles as previously outlined.
+
+    **Example of what the value for the "Chair" key in `player_instructions` should look like (it's a single string):**
+    `"You are the Chair. Your objective is to facilitate... You will receive game state as JSON. You MUST respond with valid JSON like this: {\"utterance\": \"...\", \"new_game_state\": {...}}. Example of your required JSON response format: { \"utterance\": \"This is my planned utterance...\", \"new_game_state\": { \"game_id\": \"example_game_id\", ... } }. To update new_game_state, append to dialog_history like this: ... Your specific guidance as Chair is to..."` (This is abbreviated, the actual string will be much longer).
+
+Remember: Your entire output, including the `player_instructions`, must be a single valid JSON object.
 
 Remember: You are designing the game by producing player instructions that will guide other LLM instances. The clarity and strictness of the JSON output requirements in those player instructions are paramount for the system to function correctly.
 The player LLMs will be Mistral 7B models run via Ollama (e.g., "mistral:latest"). Ensure the instructions are clear and effective for this type of model.

@@ -1,35 +1,24 @@
 # ./litellm_config.yaml
 
 model_list:
-  - model_name: ollama/mistral    # Custom name you'll use in JSON request model value
+  - model_name: ollama/mistral      # Custom name you'll use in JSON request model value
     litellm_params:
-      model: ollama/mistral        # Tells LiteLLM to use the 'mistral' model from an Ollama instance
-                                   # You could also use just 'mistral' if Ollama is the default for it
+      model: ollama/mistral         # Tells LiteLLM to use the 'mistral' model from an Ollama instance
       api_base: http://ollama:11434 # IMPORTANT: 'ollama' is the service name in docker-compose
 
-  - model_name: openai/gpt-3.5-turbo  # Custom name
+  - model_name: openai/gpt-3.5-turbo
     litellm_params:
-      model: gpt-3.5-turbo         # Actual OpenAI model name
+      model: gpt-3.5-turbo 
       api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
 
-  - model_name: openai-summarizer  # Custom name
-    litellm_params:
-      model: gpt-3.5-turbo         # Actual OpenAI model name
-      api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
-
-  - model_name: openai-nano
+  - model_name: openai/gpt-4.1-nano
     litellm_params:
       model: gpt-4.1-nano          # Actual OpenAI model name
       api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
 
-  - model_name: ollama-expander    # Custom name you'll use in JSON request model value
-    litellm_params:
-      model: ollama/mistral        # Tells LiteLLM to use the 'mistral' model from an Ollama instance
-                                   # You could also use just 'mistral' if Ollama is the default for it
-      api_base: http://ollama:11434 # IMPORTANT: 'ollama' is the service name in docker-compose
-
-# Optional: general settings for LiteLLM
-# settings:
+# General settings for LiteLLM
+settings:
+    # If you want all requests to require a master key to LiteLLM itself (good for security)
+    master_key: os.environ/LITELLM_MASTER_KEY # Tells LiteLLM to use the env var
 #   debug: True
-#   # If you want all requests to require a master key to LiteLLM itself (good for security)
-#   master_key: "your-litellm-master-key" # If set, clients must send this in Authorization header
+

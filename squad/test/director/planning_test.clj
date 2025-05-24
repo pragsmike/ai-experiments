@@ -1,5 +1,6 @@
 (ns director.planning-test
   (:require [clojure.test :refer :all]
+            [clojure.data.json]
             [director.planning :as planning]
             [director.persistence :as p] ; For referring to original fns to be mocked
             [director.util :as u]))     ; For referring to original fns to be mocked
@@ -73,7 +74,7 @@
   (record-mock-call! :save-planner-output! base-dir planner-output planner-model-cfg)
   (get-in @mock-calls [:configs :save-succeeds?] true)) ; Correct access
 
-(defn mock-call-model-fn [model-name prompt-text _config-arg-ignored]
+(defn mock-call-model-fn [model-name prompt-text]
   (record-mock-call! :call-model-fn model-name prompt-text)
   (if (= model-name mock-planner-model-name)
     (get-in @mock-calls [:configs :llm-response] valid-llm-planner-output-json-str) ; Correct access

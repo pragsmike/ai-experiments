@@ -1,1 +1,1 @@
-{"game_title":"Roberts Rules Coin Allotment","game_id":null,"players":["Chair","PlayerA","PlayerB"],"planner_model":"openai/turbo"}
+{"game_title":"Roberts Rules Coin Allotment","game_id":null,"players":["Chair","PlayerA","PlayerB"],"planner_model":"openai/gpt-3.5-turbo"}

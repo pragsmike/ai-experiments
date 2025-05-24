@@ -2,7 +2,7 @@ curl -v -X POST http://localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $OPENAI_API_KEY" \
   -d '{
-        "model": "openai-summarizer",
+        "model": "openai/gpt-3.5-turbo",
         "messages": [
           {
             "role": "user",

@@ -5,6 +5,7 @@
 (def LITELLM_ENDPOINT "http://localhost:8000/chat/completions") ; Default LiteLLM endpoint
 
 (defn- parse-llm-response [response-body model-name]
+  (println (str "DEBUG: Response from " model-name "\n" response-body))
   (try
     (let [parsed-body (json/read-str response-body :key-fn keyword)
           content (-> parsed-body :choices first :message :content)]
@@ -21,6 +22,7 @@
   "Makes an actual HTTP call to the LiteLLM endpoint."
   [model-name prompt-string]
   (println (str "\n;; --- ACTUALLY Calling LLM: " model-name " via " LITELLM_ENDPOINT " ---"))
+  (println (str "\nPrompt: \n" prompt-string ))
   (try
     (let [request-body {:model model-name
                         :messages [{:role "user" :content prompt-string}]}

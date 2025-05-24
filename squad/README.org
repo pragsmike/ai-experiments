@@ -33,7 +33,7 @@
 ├── planner_prompts/             ; Directory for planner prompt text files
 │   └── roberts_rules_planner_prompt.txt ; Example default planner prompt
 ├── docs/                        ; Project documentation
-│   ├── DESIGN.org               ; The design document
+│   ├── DESIGN.md                ; The design document, produced by Gemini after code worked
 │   ├── prompt-1.org             ; the first prompt I gave it
 │   └── prompt-2.org             ; the revised prompt rewritten by Gemini
 ├── src/

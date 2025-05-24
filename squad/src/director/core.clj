@@ -65,8 +65,7 @@
              initial-state
              instructions
              *call-model-fn*
-             default-player-model-name-config
-             planner-model-name-config) ; Pass planner model name in case call-model needs it for some reason
+             default-player-model-name-config)
             (println "Director: Planner data was invalid or incomplete. Halting.")))
         (println "Director: Planning phase failed. Halting.")))
     (println "\n=== Director Finished ===")))

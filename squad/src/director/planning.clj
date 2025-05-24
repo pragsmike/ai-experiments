@@ -15,7 +15,7 @@
       ;; Prompt text loaded, proceed
       (letfn [(generate-and-save-design [] ; Renamed for clarity
                 (println "Director: Calling Planner model (" planner-model-name-cfg ") for prompt:" planner-prompt-filepath)
-                (let [planner-response-str (call-model-fn planner-model-name-cfg planner-prompt-text planner-model-name-cfg)
+                (let [planner-response-str (call-model-fn planner-model-name-cfg planner-prompt-text)
                       parsed-llm-output (util/parse-data-from-llm-response planner-response-str "Planner Output")
                       planner-data-with-model (if (and (map? parsed-llm-output) (not (:error parsed-llm-output)))
                                                  (assoc parsed-llm-output :planner_model planner-model-name-cfg)

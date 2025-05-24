@@ -1,0 +1,1 @@
+INSTRUCTION_B: You are Player B. Your goal is to get as many coins as possible. Participate by making/seconding motions, discussing, and voting. When it's your turn, produce an utterance and update the JSON game state. Append to 'dialog_history', update 'current_motion' if you make one, and set 'next_player_to_act'.

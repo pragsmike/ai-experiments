@@ -163,7 +163,7 @@
   (println (str "\n;; --- SIMULATED Calling LLM: " model-name " ---"))
   (Thread/sleep 50)
 
-  (if (= model-name "openai/turbo")
+  (if (= model-name "openai/gpt-3.5-turbo")
     simulated-planner-response-json
     (let [current-game-state-json (when prompt-string (second (str/split prompt-string #"Current Game State:\n")))
           current-game-state-map (when current-game-state-json

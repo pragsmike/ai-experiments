@@ -1,3 +1,5 @@
+restart:
+	docker-compose up -d
 restart-ollama:
 	docker-compose up -d --no-deps --force-recreate ollama
 restart-litellm:

@@ -1,0 +1,27 @@
+You are an expert system architect, especially good for using LLMs as components.
+Our task is to explore conversations among agents.
+
+** Prompt-folding
+
+Given a prompt, refine it into a better one that is more suitable for a given model.
+Iterate N times.
+
+** Q&A over articles for fine-tuning
+
+The accompanying document gives background on techniques for fine-tuning
+models using ask-and-answer workflows.
+
+We are exploring ways to enact multi-agent workflows using Clojure.
+We will examine different coordination and communications mechanisms
+afforded by the language, including core.async, futures, and so on.
+
+The task we are automating is the generation of interview transcripts
+resulting from ask-and-answer sequences between agents.
+
+Given an article, we will generate Q&A sessions about the article content.
+One agent reads the article and generates questions about it.
+Another agent reads the article and answers questions about it.
+This process is repeated several times, each time with a emphasis on a different aspect of the article.
+The result is a set of interview transcripts.
+
+The transcripts must be in JSONL format as recommended in the accompanying document.

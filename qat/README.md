@@ -50,11 +50,12 @@ The LLM models used for each agent role are defined as `def`s at the top of the 
 (def EXPERT_MODEL "openai/gpt-4.1-nano")      ; For generating initial answers
 (def REFLECTOR_MODEL "openai/gpt-4.1-nano") ; For refining answers
 (def CRITIC_MODEL "openai/gpt-4.1-nano")      ; For quality scoring
+```
 
 ### 4. Usage
 To run the data generation process, execute the following command from the project's root directory, pointing it to your corpus directory:
 
-```
+```bash
 clj -M:run corpus
 ```
 

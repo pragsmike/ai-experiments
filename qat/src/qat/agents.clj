@@ -16,9 +16,9 @@
   (let [prompt (prompts/answer-generator-prompt retrieved-context question)]
     (llm/call-model model-name prompt)))
 
-(defn run-reflector [model-name retrieved-context question initial-answer log-fn]
-  (log-fn "  -> Invoking Reflector Agent to improve the answer...")
-  (let [prompt (prompts/reflector-prompt retrieved-context question initial-answer)]
+(defn run-finalizer [model-name retrieved-context question initial-answer initial-critique log-fn]
+  (log-fn "  -> Invoking Finalizer Agent to correct the answer...")
+  (let [prompt (prompts/finalizer-prompt retrieved-context question initial-answer initial-critique)]
     (llm/call-model model-name prompt)))
 
 (defn run-critic [model-name retrieved-context question final-answer log-fn & [log-message]]

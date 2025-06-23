@@ -62,14 +62,15 @@ Respond with ONLY a JSON object with two keys:
 Now, provide your JSON response:"
    retrieved-context question answer))
 
-(defn reflector-prompt
- "Generates the prompt for the Reflector Agent to improve an initial answer."
- [retrieved-context question initial-answer]
- (format
-  "You are a critical editor. Your task is to improve the 'INITIAL DRAFT' of an answer.
-Rewrite the draft to be more comprehensive, well-structured, and to more directly cite evidence from the 'RETRIEVED CONTEXT'.
-Do not add any information not present in the context. If the initial draft was good, refine its wording. If it was wrong or stated the answer was not in the text, attempt to find the answer in the context and provide it.
-Return only the final, improved answer.
+(defn finalizer-prompt
+  "Generates the prompt for the Finalizer Agent to correct an answer based on a critique."
+  [retrieved-context question initial-answer initial-critique]
+  (format
+   "You are a final editor. Your task is to rewrite the 'INITIAL DRAFT' to fully address the 'CRITICISM'.
+Ensure the 'FINAL ANSWER' is 100%% grounded in the provided 'RETRIEVED CONTEXT'.
+Remove any information the critique identified as un-grounded. If the initial draft was correct but the critique found it lacking, enrich it with more detail *from the context*.
+If the critique confirms the answer is not in the context, your final answer should also state that the answer cannot be found in the context.
+Return only the text of the final, corrected answer.
 
 --- RETRIEVED CONTEXT ---
 %s
@@ -83,5 +84,9 @@ Return only the final, improved answer.
 %s
 --- END INITIAL DRAFT ---
 
-Now, provide the final, improved answer:"
-  retrieved-context question initial-answer))
+--- CRITICISM ---
+%s
+--- END CRITICISM ---
+
+Now, provide the FINAL ANSWER:"
+   retrieved-context question initial-answer (pr-str initial-critique)))

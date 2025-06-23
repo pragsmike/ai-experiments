@@ -8,7 +8,7 @@
 
 (defn- run-rag-q-and-a-session
   "The core self-correction workflow for a single aspect.
-  Answer(v1) -> Critique(v1) -> Reflect(v2) -> Critique(v2)"
+  Answer(v1) -> Critique(v1) -> Finalize(v2) -> Critique(v2)"
   [corpus sample-article-text aspect num-questions log-fn]
   (if-let [questions (agents/generate-questions config/GUEST_MODEL sample-article-text aspect num-questions log-fn)]
     (do
@@ -18,13 +18,12 @@
          (do
            (log-fn (str "\n--- Processing Question: \"" question "\" ---"))
            (let [retrieved-context (retriever/search-corpus corpus question)
-               ;; v1: Initial Draft
+                 ;; v1: Initial Draft
                  answer-v1 (agents/generate-answer config/EXPERT_MODEL retrieved-context question log-fn)
                  critique-v1 (agents/run-critic config/CRITIC_MODEL retrieved-context question answer-v1 log-fn #(str "   -> Invoking Critic (v1) on INITIAL answer..."))
 
-               ;; v2: Final, Reflected Answer
-               ;; NOTE: Reflector does not yet use critique-v1. This is the next step.
-                 answer-v2 (agents/run-reflector config/REFLECTOR_MODEL retrieved-context question answer-v1 log-fn)
+                 ;; v2: Final, Corrected Answer
+                 answer-v2 (agents/run-finalizer config/FINALIZER_MODEL retrieved-context question answer-v1 critique-v1 log-fn)
                  critique-v2 (agents/run-critic config/CRITIC_MODEL retrieved-context question answer-v2 log-fn #(str "   -> Invoking Critic (v2) on FINAL answer..."))]
              {:question question
               :initial_answer answer-v1

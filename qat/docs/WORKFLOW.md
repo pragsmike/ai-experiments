@@ -1,12 +1,10 @@
-# QAT: Question-Answer Transcript Generator
-
-QAT is a multi-agent system built in Clojure to automatically generate high-quality, factually-grounded conversational datasets. It uses a Retrieval-Augmented Generation (RAG) pipeline and a unique self-correction loop to create rich, auditable dialogues about a corpus of documents. These dialogues can then be used to fine-tune Large Language Models (LLMs).
-
-## How It Works: Reliability Through Self-Correction
+### How Reliability Emerges from Unreliable Components
 
 The system's core design principle is that **a single LLM, no matter how capable, cannot be fully trusted.** LLMs are prone to subtle invention and logical leaps in their attempt to be helpful. Instead of trying to perfect a single agent, this system creates reliability through an **audited, adversarial self-correction process.**
 
 It orchestrates a conversation between specialized agents with opposing goals: an optimistic `Answer Agent` that drafts a response, and a pessimistic, pedantic `Critic Agent` that ruthlessly checks it for factual grounding. A `Finalizer` agent is then forced to reconcile these two viewpoints. By running the `Critic` one last time as a final quality gate, we don't trust any single agent's output; we trust the verifiable result of the entire workflow. The system produces a "gold standard" answer not when an agent claims it is good, but when it has survived this rigorous, multi-stage scrutiny.
+
+---
 
 ### The Self-Correction Workflow
 
@@ -17,7 +15,9 @@ The generation of a single Question-Answer pair follows a four-step loop:
 3.  **Corrective Rewrite (Answer v2):** A `Finalizer Agent` receives the initial draft *and* the critique. Its sole job is to rewrite the answer to explicitly address the criticism, removing any un-grounded claims or enriching it with more evidence from the context.
 4.  **Final Verification (Critique v2):** The `Critic Agent` is run a final time on the corrected answer. Only pairs that pass this final check with `{"grounded": true}` are considered trustworthy, "gold standard" data.
 
-### Agent Roles
+---
+
+### Agent Roles and Prompt Summaries
 
 *   **Question Generator:**
     *   **Role:** To initiate the conversation by creating a set of broad, insightful questions about the source material.
@@ -35,7 +35,11 @@ The generation of a single Question-Answer pair follows a four-step loop:
     *   **Role:** To act as the final editor, producing the polished answer (v2) by resolving the conflict between the initial draft and the critique.
     *   **Prompt Summary:** "You are a final editor. Rewrite the 'INITIAL DRAFT' to fully address the 'CRITICISM'. Ensure the 'FINAL ANSWER' is 100% grounded in the provided context and removes any un-grounded information."
 
+---
+
 ### A Typical Self-Correction Scenario
+
+This diagram illustrates how the system corrects a common failure mode where an agent invents plausible but un-grounded information.
 
 ```
 [Question]
@@ -70,68 +74,3 @@ The generation of a single Question-Answer pair follows a four-step loop:
 [Outcome]
 A high-quality, verified Q&A pair is written to the output file.
 ```
-
-## Features
-- **Multi-Agent Workflow:** Utilizes specialized agents for Questioning, Answering, and a `Finalizer`/`Critic` self-correction loop.
-- **Retrieval-Augmented Generation (RAG):** Answers are generated based on context retrieved from a local document corpus, minimizing hallucination.
-- **Automated Quality Scoring:** The `Critic` agent evaluates every answer, embedding a quality score and an audit trail directly into the dataset.
-- **Multi-Aspect Conversation:** Generates multiple distinct conversations about a topic, each focused on a different theme (e.g., Factual Summary, Critical Evaluation).
-- **Parallel Processing:** Processes conversational aspects concurrently for high throughput.
-- **Structured JSONL Output:** Produces clean, structured JSONL data ready for fine-tuning pipelines.
-
-## Setup
-
-### 1. Prerequisites
-- **Clojure:** Ensure you have the Clojure CLI tools installed. Follow the official guide: [Clojure CLI Tools Installation](https://clojure.org/guides/install_clojure).
-- **LLM Proxy:** This tool is designed to work with an OpenAI-compatible API server like [LiteLLM](https://github.com/BerriAI/litellm). Set up LiteLLM or another proxy to serve your desired models.
-
-### 2. Installation
-1.  **Clone the repository:**
-    ```bash
-    git clone <your-repo-url>
-    cd qat
-    ```
-
-2.  **Create the Knowledge Corpus:**
-    The system reads its knowledge from a directory of text files.
-    ```bash
-    mkdir corpus
-    ```
-    Populate the `corpus/` directory with one or more `.txt` files containing the information you want to generate conversations about.
-
-3.  **Configure Environment Variables:**
-    The application requires an API key to authenticate with your LLM proxy. Set this key as an environment variable.
-
-    On macOS/Linux:
-    ```bash
-    export LITELLM_API_KEY="your-proxy-api-key"
-    ```
-    On Windows (PowerShell):
-    ```bash
-    $env:LITELLM_API_KEY="your-proxy-api-key"
-    ```
-
-## Configuration
-The LLM models used for each agent role are defined in `src/qat/config.clj`. You can edit these to match the model names configured in your LLM proxy.
-
-```clojure
-// src/qat/config.clj
-
-(def GUEST_MODEL "openai/gpt-3.5-turbo")     ; For asking questions
-(def EXPERT_MODEL "openai/gpt-4.1-nano")       ; For generating initial answers
-(def FINALIZER_MODEL "openai/gpt-4.1-nano")  ; For correcting answers based on critique
-(def CRITIC_MODEL "openai/gpt-4.1-nano")       ; For quality scoring
-```
-
-## Usage
-To run the data generation process, execute the following command from the project's root directory, pointing it to your corpus directory:
-
-```bash
-clj -M:run corpus
-```
-
-The program will:
-  * Load all .txt files from the corpus directory.
-  * Process them in parallel according to the defined aspects.
-  * Print orderly logs for each session to the console.
-  * Write the final, structured output to `corpus_output.jsonl`.

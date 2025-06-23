@@ -1,0 +1,178 @@
+### Sample `corpus_output.jsonl`
+
+```json
+{
+  "conversation_id": "samr_rag_v2_session_1",
+  "article_metadata": {
+    "title": "SAMR Model Corpus",
+    "source": "corpus/"
+  },
+  "session_metadata": {
+    "focus_aspect": "Factual Summary"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "How do educators determine which level of the SAMR model (Substitution, Augmentation, Modification, Redefinition) is most appropriate for a given lesson or subject area?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context indicates that it does not provide specific guidance on how educators determine which level of the SAMR model (Substitution, Augmentation, Modification, Redefinition) is most appropriate for a given lesson or subject area."
+    },
+    {
+      "role": "user",
+      "content": "Can you provide examples of how the SAMR model has been successfully implemented in classrooms across different grade levels and subject areas, highlighting the impact on student learning outcomes?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context provides examples of how the SAMR model has been used in classrooms across different grade levels and subject areas, illustrating each level of the model. For instance, in elementary reading, students create book trailers and participate in virtual book clubs, while in middle school science, students produce screencast presentations and share with environmental experts. In high school history, students explore interactive learning maps and experience virtual reality field trips. In general writing assignments, students collaborate on documents and develop multimedia presentations. These implementations demonstrate how the SAMR model can support diverse instructional activities across subjects and grade levels. However, the context does not explicitly mention or provide evidence regarding the specific impact of these implementations on student learning outcomes."
+    }
+  ],
+  "quality_metrics": {
+    "pairs": [
+      {
+        "question": "How do educators determine which level of the SAMR model (Substitution, Augmentation, Modification, Redefinition) is most appropriate for a given lesson or subject area?",
+        "initial_answer": "The retrieved context does not provide specific information on how educators determine which level of the SAMR model is most appropriate for a given lesson or subject area.",
+        "initial_critique": {
+          "grounded": true,
+          "reasoning": "The context explicitly states that it does not provide specific guidance on how educators choose the appropriate SAMR level for lessons or subjects."
+        },
+        "final_answer": "The retrieved context indicates that it does not provide specific guidance on how educators determine which level of the SAMR model (Substitution, Augmentation, Modification, Redefinition) is most appropriate for a given lesson or subject area.",
+        "final_critique": {
+          "grounded": true,
+          "reasoning": "The context explicitly states that it does not provide specific guidance on how educators determine the appropriate SAMR level for lessons or subject areas."
+        }
+      },
+      {
+        "question": "Can you provide examples of how the SAMR model has been successfully implemented in classrooms across different grade levels and subject areas, highlighting the impact on student learning outcomes?",
+        "initial_answer": "The retrieved context provides examples of how the SAMR model has been used in classrooms across different grade levels and subject areas, illustrating each level of the model. For example, in elementary reading, students create book trailers and participate in virtual book clubs, and in middle school science, students create screencast presentations and share with environmental experts. In high school history, students explore interactive learning maps and experience virtual reality field trips. In general writing, students collaborate on documents and produce multimedia presentations. These implementations demonstrate how the SAMR model influences student engagement and authentic learning experiences across subjects and grade levels. However, the context does not explicitly mention the specific impact on student learning outcomes.",
+        "initial_critique": {
+          "grounded": false,
+          "reasoning": "The context describes examples of SAMR implementation across grade levels and subjects but does not explicitly detail or quantify its impact on student learning outcomes."
+        },
+        "final_answer": "The retrieved context provides examples of how the SAMR model has been used in classrooms across different grade levels and subject areas, illustrating each level of the model. For instance, in elementary reading, students create book trailers and participate in virtual book clubs, while in middle school science, students produce screencast presentations and share with environmental experts. In high school history, students explore interactive learning maps and experience virtual reality field trips. In general writing assignments, students collaborate on documents and develop multimedia presentations. These implementations demonstrate how the SAMR model can support diverse instructional activities across subjects and grade levels. However, the context does not explicitly mention or provide evidence regarding the specific impact of these implementations on student learning outcomes.",
+        "final_critique": {
+          "grounded": false,
+          "reasoning": "The context describes various classroom activities aligned with SAMR levels across subjects and grades but does not provide explicit evidence or information on how these implementations impacted student learning outcomes."
+        }
+      }
+    ]
+  }
+}
+{
+  "conversation_id": "samr_rag_v2_session_2",
+  "article_metadata": {
+    "title": "SAMR Model Corpus",
+    "source": "corpus/"
+  },
+  "session_metadata": {
+    "focus_aspect": "Analysis of Transformation"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "How do educators determine which level of the SAMR model (Substitution, Augmentation, Modification, or Redefinition) is most appropriate for a particular lesson or activity, and what factors influence this decision?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context indicates that there is no information provided about how educators determine which level of the SAMR model is most appropriate for a particular lesson or activity, nor does it specify the factors that influence this decision. Therefore, the answer cannot be found in the context."
+    },
+    {
+      "role": "user",
+      "content": "What are some examples of successful implementation of the SAMR model in classrooms across different subject areas and grade levels, and how have these examples impacted student learning outcomes?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context provides multiple concrete examples of successful implementation of the SAMR model across various subjects and grade levels, demonstrating its influence on student engagement and learning outcomes. In elementary reading, students move from reading ebooks (Substitution) to creating book trailers (Modification) and participate in virtual book clubs via video conferencing (Redefinition), fostering collaboration and deeper comprehension. Middle school science students research ecosystems online (Substitution), then create screencast presentations (Modification), and engage with environmental experts through live video conferencing (Redefinition), which connects classroom learning to real-world science and enhances understanding. High school history students watch pre-recorded lectures (Substitution), explore interactive Learning Maps (Modification), and participate in virtual reality field trips (Redefinition), providing immersive experiences that deepen historical understanding. In general writing, students transition from typing essays to creating multimedia presentations and sharing work with global audiences, improving communication skills and creating authentic audiences. In assessments, students advance from taking online quizzes to developing digital portfolios and recording reflections, leading to more meaningful evaluation and reflection. These examples demonstrate that implementing the SAMR model can enhance student engagement, promote deeper cognitive processing, and connect classroom activities to real-world contexts, thereby positively impacting student learning outcomes."
+    }
+  ],
+  "quality_metrics": {
+    "pairs": [
+      {
+        "question": "How do educators determine which level of the SAMR model (Substitution, Augmentation, Modification, or Redefinition) is most appropriate for a particular lesson or activity, and what factors influence this decision?",
+        "initial_answer": "The retrieved context does not provide information on how educators determine which level of the SAMR model is most appropriate for a particular lesson or activity or what factors influence this decision.",
+        "initial_critique": {
+          "grounded": true,
+          "reasoning": "The answer correctly states that the retrieved context does not provide information on how educators determine the appropriate SAMR level or the influencing factors, aligning with the content provided."
+        },
+        "final_answer": "The retrieved context indicates that there is no information provided about how educators determine which level of the SAMR model is most appropriate for a particular lesson or activity, nor does it specify the factors that influence this decision. Therefore, the answer cannot be found in the context.",
+        "final_critique": {
+          "grounded": true,
+          "reasoning": "The context explicitly states that there is no information provided about how educators determine the appropriate SAMR level or the influencing factors, supporting the answer's claim that such details are absent."
+        }
+      },
+      {
+        "question": "What are some examples of successful implementation of the SAMR model in classrooms across different subject areas and grade levels, and how have these examples impacted student learning outcomes?",
+        "initial_answer": "The retrieved context provides specific examples of how the SAMR model has been used in classrooms across various subjects and grade levels, demonstrating its implementation. For elementary reading, students move from reading ebooks (Substitution) to creating book trailers (Modification), and participate in virtual book clubs via video conferencing (Redefinition). In middle school science, students research ecosystems online (Substitution), create screencast presentations (Modification), and engage with environmental experts through live video conferencing (Redefinition). High school history students watch pre-recorded lectures (Substitution), explore interactive Learning Maps (Modification), and take virtual reality field trips (Redefinition). In general writing, students transition from typing essays to creating multimedia presentations and sharing work globally, enhancing their engagement and communication skills. In assessment, students progress from taking online quizzes to creating digital portfolios and reflecting through recordings, fostering deeper understanding and wider audiences. These examples illustrate how the implementation of the SAMR model has been used to enhance student learning outcomes by increasing engagement, promoting deeper processing, and connecting classroom activities to real-world contexts.",
+        "initial_critique": {
+          "grounded": true,
+          "reasoning": "The answer is fully supported by the context, which provides multiple concrete and detailed examples of SAMR implementation across different subjects, grade levels, and activities, illustrating its impact on student engagement and learning outcomes."
+        },
+        "final_answer": "The retrieved context provides multiple concrete examples of successful implementation of the SAMR model across various subjects and grade levels, demonstrating its influence on student engagement and learning outcomes. In elementary reading, students move from reading ebooks (Substitution) to creating book trailers (Modification) and participate in virtual book clubs via video conferencing (Redefinition), fostering collaboration and deeper comprehension. Middle school science students research ecosystems online (Substitution), then create screencast presentations (Modification), and engage with environmental experts through live video conferencing (Redefinition), which connects classroom learning to real-world science and enhances understanding. High school history students watch pre-recorded lectures (Substitution), explore interactive Learning Maps (Modification), and participate in virtual reality field trips (Redefinition), providing immersive experiences that deepen historical understanding. In general writing, students transition from typing essays to creating multimedia presentations and sharing work with global audiences, improving communication skills and creating authentic audiences. In assessments, students advance from taking online quizzes to developing digital portfolios and recording reflections, leading to more meaningful evaluation and reflection. These examples demonstrate that implementing the SAMR model can enhance student engagement, promote deeper cognitive processing, and connect classroom activities to real-world contexts, thereby positively impacting student learning outcomes.",
+        "final_critique": {
+          "grounded": false,
+          "reasoning": "The answer asserts that the examples demonstrate 'successful implementation' and its impact on 'student learning outcomes,' but the retrieved context only provides descriptions of activities at each SAMR level without explicitly stating or supporting that these implementations were successful or that they led to improved learning outcomes."
+        }
+      }
+    ]
+  }
+}
+{
+  "conversation_id": "samr_rag_v2_session_3",
+  "article_metadata": {
+    "title": "SAMR Model Corpus",
+    "source": "corpus/"
+  },
+  "session_metadata": {
+    "focus_aspect": "Critical Evaluation"
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "How does the SAMR model encourage educators to critically evaluate the use of technology in different subjects and grade levels?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context does not specify how the SAMR model encourages educators to critically evaluate the use of technology across different subjects and grade levels."
+    },
+    {
+      "role": "user",
+      "content": "In what ways can educators apply critical evaluation skills to determine whether technology integration is achieving deep learning and transformative outcomes in their classrooms?"
+    },
+    {
+      "role": "assistant",
+      "content": "The retrieved context does not provide specific information on how educators can apply critical evaluation skills to determine whether technology integration is achieving deep learning and transformative outcomes in their classrooms."
+    }
+  ],
+  "quality_metrics": {
+    "pairs": [
+      {
+        "question": "How does the SAMR model encourage educators to critically evaluate the use of technology in different subjects and grade levels?",
+        "initial_answer": "The retrieved context does not provide information on how the SAMR model encourages educators to critically evaluate the use of technology in different subjects and grade levels.",
+        "initial_critique": {
+          "grounded": true,
+          "reasoning": "The retrieved context explains the levels of the SAMR model and provides examples across subjects and grade levels, but it does not describe how the model encourages critical evaluation by educators."
+        },
+        "final_answer": "The retrieved context does not specify how the SAMR model encourages educators to critically evaluate the use of technology across different subjects and grade levels.",
+        "final_critique": {
+          "grounded": true,
+          "reasoning": "The context explains the levels and examples of the SAMR model but does not specify how it encourages educators to critically evaluate technology use across subjects and grade levels."
+        }
+      },
+      {
+        "question": "In what ways can educators apply critical evaluation skills to determine whether technology integration is achieving deep learning and transformative outcomes in their classrooms?",
+        "initial_answer": "The retrieved context does not provide specific information on how educators can apply critical evaluation skills to determine whether technology integration is achieving deep learning and transformative outcomes in their classrooms.",
+        "initial_critique": {
+          "grounded": true,
+          "reasoning": "The context discusses critiques of the SAMR model and issues related to technology integration but does not mention or specify how educators can apply critical evaluation skills to assess deep learning or transformative outcomes."
+        },
+        "final_answer": "The retrieved context does not provide specific information on how educators can apply critical evaluation skills to determine whether technology integration is achieving deep learning and transformative outcomes in their classrooms.",
+        "final_critique": {
+          "grounded": true,
+          "reasoning": "The context explains critiques of the SAMR model, emphasizing the importance of pedagogical considerations and the potential limitations of technology use, but it does not offer specific guidance on applying critical evaluation skills for assessing deep learning and transformation."
+        }
+      }
+    ]
+  }
+}
+```

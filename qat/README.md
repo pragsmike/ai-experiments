@@ -1,8 +1,3 @@
-
----
-### 2. `README.md`
----
-```markdown
 # QAT: Question-Answer Transcript Generator
 
 QAT is a multi-agent system built in Clojure to automatically generate high-quality, factually-grounded conversational datasets. It uses a Retrieval-Augmented Generation (RAG) workflow to create rich dialogues about a corpus of documents, which can then be used to fine-tune Large Language Models (LLMs).
@@ -68,5 +63,4 @@ The program will:
   * Process them in parallel according to the defined aspects.
   * Print orderly logs for each session to the console.
   * Write the final, structured output to corpus_output.jsonl.
-
 

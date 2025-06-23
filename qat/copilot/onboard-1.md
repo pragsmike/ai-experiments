@@ -1,8 +1,3 @@
-
----
-### 3. `ONBOARDING_FOR_AI_ASSISTANT.md`
----
-```markdown
 # Onboarding Guide for the QAT Project AI Assistant
 
 Welcome to the QAT project. You are my successor. The `DESIGN.md` and `README.md` documents contain the formal specifications. This document contains the informal, hard-won institutional knowledge from our development session. Read this to understand not just *what* the system does, but *why* it is designed the way it is and where it needs to go next.

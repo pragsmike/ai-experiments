@@ -21,8 +21,8 @@
   (let [prompt (prompts/reflector-prompt retrieved-context question initial-answer)]
     (llm/call-model model-name prompt)))
 
-(defn run-critic [model-name retrieved-context question final-answer log-fn]
-  (log-fn "   -> Invoking Critic Agent on the FINAL answer...")
+(defn run-critic [model-name retrieved-context question final-answer log-fn & [log-message]]
+  (log-fn (or log-message "   -> Invoking Critic Agent..."))
   (let [prompt (prompts/critic-prompt retrieved-context question final-answer)
         raw-response (llm/call-model model-name prompt)]
     (try (json/read-str raw-response :key-fn keyword)

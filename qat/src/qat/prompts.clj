@@ -61,3 +61,27 @@ Respond with ONLY a JSON object with two keys:
 
 Now, provide your JSON response:"
    retrieved-context question answer))
+
+(defn reflector-prompt
+ "Generates the prompt for the Reflector Agent to improve an initial answer."
+ [retrieved-context question initial-answer]
+ (format
+  "You are a critical editor. Your task is to improve the 'INITIAL DRAFT' of an answer.
+Rewrite the draft to be more comprehensive, well-structured, and to more directly cite evidence from the 'RETRIEVED CONTEXT'.
+Do not add any information not present in the context. If the initial draft was good, refine its wording. If it was wrong or stated the answer was not in the text, attempt to find the answer in the context and provide it.
+Return only the final, improved answer.
+
+--- RETRIEVED CONTEXT ---
+%s
+--- END RETRIEVED CONTEXT ---
+
+--- QUESTION ---
+%s
+--- END QUESTION ---
+
+--- INITIAL DRAFT ---
+%s
+--- END INITIAL DRAFT ---
+
+Now, provide the final, improved answer:"
+  retrieved-context question initial-answer))

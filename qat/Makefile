@@ -1,2 +1,2 @@
 run:
-	clj -M:run sample-article.txt
+	clj -M:run corpus

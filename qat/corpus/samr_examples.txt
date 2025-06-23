@@ -1,0 +1,53 @@
+Here are concrete examples of how the SAMR model is used in classrooms, illustrating each of its four levels—Substitution, Augmentation, Modification, and Redefinition—across various subjects and grade levels:
+
+## **Elementary Reading Example**
+- **Substitution:** Students read ebooks instead of physical books, using platforms like Epic or MackVIA.
+- **Augmentation:** Students use built-in text-to-speech features to listen to the book, enhancing accessibility.
+- **Modification:** Students create a book trailer using tools like Animoto or Pixton, integrating media and storytelling.
+- **Redefinition:** Students participate in virtual book clubs with peers from other states or countries via video conferencing, sharing insights and perspectives beyond their classroom[1].
+
+## **Middle School Science Example**
+- **Substitution:** Researching ecosystems using online databases instead of library books.
+- **Augmentation:** Taking notes with word processors, utilizing features like color-coding, images, and hyperlinks.
+- **Modification:** Creating screencast videos to present research findings, allowing for narration and multimedia integration.
+- **Redefinition:** Sharing presentations with environmental experts via live video conferencing and receiving real-time feedback, connecting classroom learning to real-world experts[1].
+
+## **High School History Example**
+- **Substitution:** Watching a pre-recorded lecture instead of attending a live one.
+- **Augmentation:** Using interactive slide decks (e.g., Google Slides with Pear Deck) that include embedded comprehension questions for immediate feedback.
+- **Modification:** Exploring interactive Learning Maps with videos, audio, maps, and quizzes, enabling self-paced, personalized learning.
+- **Redefinition:** Taking a virtual reality field trip to the United States Holocaust Memorial Museum, offering immersive experiences not possible in a traditional classroom[1].
+
+## **General Writing Assignment Example**
+- **Substitution:** Typing essays on a computer instead of handwriting them.
+- **Augmentation:** Using word processors with spellcheck and grammar tools.
+- **Modification:** Collaborating on documents in real time using cloud-based tools, enabling peer feedback and revision.
+- **Redefinition:** Creating multimedia presentations or digital stories that combine text, video, and audio, or sharing work globally for authentic audiences[2][3][4][5].
+
+## **Assessment Example**
+- **Substitution:** Taking quizzes online instead of on paper.
+- **Augmentation:** Using interactive quizzes that provide instant feedback.
+- **Modification:** Designing assessments where students create digital portfolios or screencasts to demonstrate understanding.
+- **Redefinition:** Students record and reflect on their own presentations, or connect with global audiences to present their findings[6][5].
+
+## **Summary Table of SAMR Classroom Examples**
+
+| Level          | Example Activity                                                                                 |
+|----------------|-------------------------------------------------------------------------------------------------|
+| Substitution   | Reading ebooks instead of print; typing essays instead of handwriting                            |
+| Augmentation   | Using text-to-speech; interactive slides with embedded questions                                 |
+| Modification   | Collaborative writing in Google Docs; screencast presentations                                   |
+| Redefinition   | Virtual field trips; global virtual book clubs; sharing projects with experts beyond the school  |
+
+These examples demonstrate how educators use the SAMR model to progressively integrate technology, moving from simple substitutions to transformative learning experiences that would be impossible without digital tools[1][4][5].
+
+[1] https://www.modelteaching.com/education-articles/technology-in-the-classroom/incorporating-technology-into-the-classroom-using-the-samr-model
+[2] https://www.cypherlearning.com/blog/k-20/integrating-ed-tech-in-the-classroom-one-step-at-a-time-with-the-samr-model
+[3] http://www.3plearning.com/blog/connectingsamrmodel/
+[4] https://nearpod.com/blog/samr/
+[5] https://vibe.us/blog/samr-model/
+[6] https://pressbooks.nebraska.edu/onlineteaching/chapter/samr-model-for-integrating-technology/
+[7] https://classful.com/samr-model-examples/
+[8] https://taylorinstitute.ucalgary.ca/resources/SAMR-TPACK
+[9] https://gset.education/the-samr-models-of-technology-integration-practical-cases-for-your-classroom/
+[10] https://ditchthattextbook.com/a-samr-deep-dive-deconstructing-samr-with-examples/

@@ -1,6 +1,0 @@
-#+TITLE: QAT: Q&A over articles for fine-tuning
-
-
-** Prompt-folding
-
-** Q&A over articles for fine-tuning

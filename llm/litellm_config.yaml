@@ -70,18 +70,18 @@ model_list:
 
   - model_name: openai/gpt-4.1-nano
     litellm_params:
-      model: gpt-4.1-nano                 # Actual OpenAI model name
-      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+      model: gpt-4.1-nano
+      api_key: os.environ/OPENAI_API_KEY
 
   - model_name: openai/gpt-4.1-mini
     litellm_params:
-      model: gpt-4.1-mini                 # Actual OpenAI model name
-      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+      model: gpt-4.1-mini   # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY
 
   - model_name: openai/gpt-4.1
     litellm_params:
-      model: gpt-4.1                      # Actual OpenAI model name
-      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+      model: gpt-4.1
+      api_key: os.environ/OPENAI_API_KEY
 
   - model_name: openai/gpt-4o
     litellm_params:

@@ -6,15 +6,99 @@ model_list:
       model: ollama/mistral         # Tells LiteLLM to use the 'mistral' model from an Ollama instance
       api_base: http://ollama:11434 # IMPORTANT: 'ollama' is the service name in docker-compose
 
+  - model_name: ollama/qwen3:32b
+    litellm_params:
+      model: ollama/qwen3:32b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/qwen3:30b
+    litellm_params:
+      model: ollama/qwen3:30b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/qwen3:14b
+    litellm_params:
+      model: ollama/qwen3:14b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/mistral-nemo:12b
+    litellm_params:
+      model: ollama/mistral-nemo:12b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/gemma3:12b
+    litellm_params:
+      model: ollama/gemma3:12b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/qwen3:8b
+    litellm_params:
+      model: ollama/qwen3:8b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/granite3.3:8b
+    litellm_params:
+      model: ollama/granite3.3:8b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/qwen3:4b
+    litellm_params:
+      model: ollama/qwen3:4b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/qwen3:1.7b
+    litellm_params:
+      model: ollama/qwen3:1.7b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/granit3.3:2b
+    litellm_params:
+      model: ollama/granit3.3:2b
+      api_base: http://ollama:11434
+
+  - model_name: ollama/gemma3:1b
+    litellm_params:
+      model: ollama/gemma3:1b
+      api_base: http://ollama:11434
+
+
+
   - model_name: openai/gpt-3.5-turbo
     litellm_params:
-      model: gpt-3.5-turbo 
-      api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
+      model: gpt-3.5-turbo
+      api_key: os.environ/OPENAI_API_KEY
 
   - model_name: openai/gpt-4.1-nano
     litellm_params:
-      model: gpt-4.1-nano          # Actual OpenAI model name
-      api_key: os.environ/OPENAI_API_KEY # LiteLLM will get this from its container's environment
+      model: gpt-4.1-nano                 # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+
+  - model_name: openai/gpt-4.1-mini
+    litellm_params:
+      model: gpt-4.1-mini                 # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+
+  - model_name: openai/gpt-4.1
+    litellm_params:
+      model: gpt-4.1                      # Actual OpenAI model name
+      api_key: os.environ/OPENAI_API_KEY	# LiteLLM will get this from its container's environment
+
+  - model_name: openai/gpt-4o
+    litellm_params:
+      model: gpt-4o
+      api_key: os.environ/OPENAI_API_KEY
+
+  - model_name: openai/o3
+    litellm_params:
+      model: o3
+      api_key: os.environ/OPENAI_API_KEY
+  - model_name: openai/o3-pro
+    litellm_params:
+      model: o3-pro
+      api_key: os.environ/OPENAI_API_KEY
+
+
+
 
 # General settings for LiteLLM
 settings:

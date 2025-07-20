@@ -51,9 +51,9 @@ model_list:
       model: ollama/qwen3:1.7b
       api_base: http://ollama:11434
 
-  - model_name: ollama/granit3.3:2b
+  - model_name: ollama/granite3.3:2b
     litellm_params:
-      model: ollama/granit3.3:2b
+      model: ollama/granite3.3:2b
       api_base: http://ollama:11434
 
   - model_name: ollama/gemma3:1b

@@ -15,10 +15,10 @@
     packages = {
       # only one definition of packages.${system}:
       "${system}" = {
-        docker         = pkgs.docker;
-        "docker-compose" = pkgs.docker-compose;
-	btop		= pkgs.btop;
-	jq		= pkgs.jq;
+        docker            = pkgs.docker;
+        "docker-compose"  = pkgs.docker-compose;
+        btop              = pkgs.btop;
+        jq                = pkgs.jq;
       };
     };
 

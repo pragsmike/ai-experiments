@@ -1,10 +1,11 @@
-# docker-compose up -d --no-deps --force-recreate ollama
+# Images are pinned by digest. Update the digest only after vetting the
+# candidate image and recreating the affected service.
 services:
     ##############################################
     # LLM runtime
     ##############################################
     ollama:
-        image: ollama/ollama:latest
+        image: ${OLLAMA_IMAGE:-ollama/ollama:latest@sha256:f478761c18fea69b1624e095bce0f8aab06825d09ccabcd0f88828db0df185ce}
         container_name: ollama
         restart: unless-stopped
         pull_policy: always # Ensures you get the latest Ollama image on startup/recreate
@@ -33,7 +34,7 @@ services:
             #- ./ollama_data:/root/.ollama # Persists Ollama models outside the container
 
     litellm:
-        image: ghcr.io/berriai/litellm:main-stable
+        image: ${LITELLM_IMAGE:-ghcr.io/berriai/litellm:main-stable@sha256:229665e372493ab0948f36ca813a5a20f352e258424383d6a7043bf088eb12fb}
         container_name: litellm_service
         ports:
                 - "8000:4000" # LiteLLM now defaults to port 4000 internally. Expose it as 8000 externally.
@@ -53,7 +54,7 @@ services:
 
 
     postgres_db:
-        image: postgres:15
+        image: ${POSTGRES_IMAGE:-postgres:15@sha256:f57a3bdbf044f0b213fdc99f35a0d21c401608bf41f063176ec00c51df9655f7}
         container_name: postgres_for_litellm
         environment:
                 # These are for the PostgreSQL superuser (default is 'postgres')
@@ -78,7 +79,7 @@ services:
     # Web UI for Ollama (chat, model mgmt, etc.)
     ##############################################
     open-webui:
-        image: ghcr.io/open-webui/open-webui:main
+        image: ${OPEN_WEBUI_IMAGE:-ghcr.io/open-webui/open-webui:main@sha256:9c7cc3c9ea895fe362dac92b928d5e11ea901500c37d193642facebc3f513ff0}
         container_name: open-webui
         restart: unless-stopped
         pull_policy: always
